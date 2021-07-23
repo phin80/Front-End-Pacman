@@ -1,5 +1,10 @@
 import pygame
 
+from runner import main as astar
+
+#grd = astar(w=20,d=15)
+#if grd != None:
+#	print(grd)
 
 # it is better to have an extra variable, than an extremely long line.
 img_path = "./player.png"
@@ -7,9 +12,9 @@ img_path = "./player.png"
 
 class Bird(pygame.sprite.Sprite):
 	def __init__(self):
-		self.x = 0
-		self.y = 0
-		self.speed = 3
+		self.x = 50
+		self.y = 50
+		self.speed = 1.5
 		self.ckey = None
 		super().__init__()
 		self.imgdct = {}
@@ -19,6 +24,7 @@ class Bird(pygame.sprite.Sprite):
 		] for itm in ["RIGHT", "DOWN", "UP", "LEFT"]]
 		self.index = 0
 		self.image = pygame.image.load("images/RIGHT/player_0.png")
+		self.width, self.height = [self.image.get_width(), self.image.get_height()]
 		self.slowdown = 6
 		self.actualslow = 0
 
@@ -60,12 +66,57 @@ class Bird(pygame.sprite.Sprite):
 
 
 pygame.init()
-screen = pygame.display.set_mode((640, 400))
-
-bird = Bird()
+screen = pygame.display.set_mode((1000, 1000))
+screen.fill((0,0,0)) # fill the screen with white
+bird = Bird() # create an instance
 clock = pygame.time.Clock()
+#pygame.draw.r
 playergroup = pygame.sprite.Group(bird)
-running = True
+yes = True
+
+
+def dificulty_setting():
+	image1 = pygame.image.load("images/MUW4Dh6-pacman-background.jpg")
+	screen.blit(image1, (0, 0))
+	font1 = pygame.font.Font(None, 150)
+	font2 = pygame.font.Font(None, 300)
+	caption6 = font1.render("ultimate", True, (255, 255, 255))
+	screen.blit(caption6, (275, 50))
+	caption7 = font1.render("PAC MAN", True, (255, 255, 255))
+	screen.blit(caption7, (250, 160))
+	caption1 = font1.render("choose a dificulty", True, (255, 255, 255))
+	screen.blit(caption1, (50, 275))
+
+	pygame.draw.rect(screen, (0, 255, 0), (100, 500, 200, 200))
+	pygame.draw.rect(screen, (255, 255, 255), (100, 500, 200, 200), 4)
+	pygame.draw.rect(screen, (0, 0, 255), (400, 500, 200, 200))
+	pygame.draw.rect(screen, (255, 255, 255), (400, 500, 200, 200), 4)
+	pygame.draw.rect(screen, (255, 0, 0), (700, 500, 200, 200))
+	pygame.draw.rect(screen, (255, 255, 255), (700, 500, 200, 200), 4)
+	pygame.draw.rect(screen, (0, 255, 255), (250, 750, 500, 200))
+	pygame.draw.rect(screen, (255, 255, 255), (250, 750, 500, 200), 4)
+	caption2 = font2.render("1", True, (0, 0, 0))
+	screen.blit(caption2, (140, 500))
+	caption3 = font2.render("2", True, (0, 0, 0))
+	screen.blit(caption3, (440, 500))
+	caption4 = font2.render("3", True, (0, 0, 0))
+	screen.blit(caption4, (740, 500))
+	caption5 = font1.render("campaign", True, (0, 0, 0))
+	screen.blit(caption5, (250, 800))
+	pygame.display.update()
+
+
+while True:
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			pygame.quit()
+			yes = False
+	dificulty_setting()
+	if event.type == pygame.MOUSEBUTTONDOWN:
+		mouse_position= pygame.mouse.get_pos()
+			if
+
+running = False
 bckey = None
 
 while running:
@@ -73,8 +124,18 @@ while running:
 		if event.type == pygame.QUIT:
 			pygame.quit()
 			running = False
-
+	screen.fill((0, 0, 0))  # fill the screen with white
+	pygame.draw.rect(screen, (255,255,255), (5,5,990,990), 20)
+	if pygame.Surface.get_at(screen, (round(bird.x-1),round(bird.y)))==(255,255,255):
+		bird.x = bird.x+3
+	if pygame.Surface.get_at(screen, (round(bird.x+bird.width-1),round(bird.y-1)))==(255,255,255):
+		bird.y = bird.y+3
+	if pygame.Surface.get_at(screen, (round(bird.x+bird.width+1),round(bird.y+bird.height)))==(255,255,255):
+		bird.x = bird.x-3
+	if pygame.Surface.get_at(screen, (round(bird.x),round(bird.y+bird.height+1)))==(255,255,255):
+		bird.y = bird.y-3
 	bird.handle_keys()
+
 	bckey = {
 		"DOWN": [False if bird.ckey[pygame.K_DOWN] == 0 else True][0],
 		"UP": [False if bird.ckey[pygame.K_UP] == 0 else True][0],
@@ -87,7 +148,6 @@ while running:
 			bird.handle_keys(k=x)
 			kk = x
 			break
-	screen.fill((0, 0, 0))
 	bird.draw(screen, direction=kk)
 	pygame.display.update()
 	clock.tick(40)
