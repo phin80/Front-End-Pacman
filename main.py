@@ -97,11 +97,11 @@ def dificulty_setting():
 	pygame.draw.rect(screen, (255, 255, 255), (250, 750, 500, 200), 4)
 	caption2 = font2.render("1", True, (0, 0, 0))
 	screen.blit(caption2, (140, 500))
-	caption3 = font2.render("2", True, (0, 0, 0))
+	caption3 = font2.render("2", True, (0, 1, 0))
 	screen.blit(caption3, (440, 500))
-	caption4 = font2.render("3", True, (0, 0, 0))
+	caption4 = font2.render("3", True, (1, 0, 0))
 	screen.blit(caption4, (740, 500))
-	caption5 = font1.render("campaign", True, (0, 0, 0))
+	caption5 = font1.render("campaign", True, (0, 0, 1))
 	screen.blit(caption5, (250, 800))
 	pygame.display.update()
 
@@ -112,9 +112,10 @@ while True:
 			pygame.quit()
 			yes = False
 	dificulty_setting()
+	mouse_position = (0,0)
 	if event.type == pygame.MOUSEBUTTONDOWN:
 		mouse_position= pygame.mouse.get_pos()
-			if
+		if pygame.Surface.get_at(screen,mouse_position) == (0,255,0) or pygame.Surface.get_at(screen, mouse_position) == (0,0,0):
 
 running = False
 bckey = None
