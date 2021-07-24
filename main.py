@@ -105,50 +105,66 @@ def dificulty_setting():
 	screen.blit(caption5, (250, 800))
 	pygame.display.update()
 
+running = True
 
-while True:
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			pygame.quit()
-			yes = False
-	dificulty_setting()
-	mouse_position = (0,0)
-	if event.type == pygame.MOUSEBUTTONDOWN:
-		mouse_position= pygame.mouse.get_pos()
-		if pygame.Surface.get_at(screen,mouse_position) == (0,255,0) or pygame.Surface.get_at(screen, mouse_position) == (0,0,0):
 
-running = False
 bckey = None
-
+decision = 1
 while running:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			pygame.quit()
 			running = False
-	screen.fill((0, 0, 0))  # fill the screen with white
-	pygame.draw.rect(screen, (255,255,255), (5,5,990,990), 20)
-	if pygame.Surface.get_at(screen, (round(bird.x-1),round(bird.y)))==(255,255,255):
-		bird.x = bird.x+3
-	if pygame.Surface.get_at(screen, (round(bird.x+bird.width-1),round(bird.y-1)))==(255,255,255):
-		bird.y = bird.y+3
-	if pygame.Surface.get_at(screen, (round(bird.x+bird.width+1),round(bird.y+bird.height)))==(255,255,255):
-		bird.x = bird.x-3
-	if pygame.Surface.get_at(screen, (round(bird.x),round(bird.y+bird.height+1)))==(255,255,255):
-		bird.y = bird.y-3
-	bird.handle_keys()
 
-	bckey = {
-		"DOWN": [False if bird.ckey[pygame.K_DOWN] == 0 else True][0],
-		"UP": [False if bird.ckey[pygame.K_UP] == 0 else True][0],
-		"LEFT": [False if bird.ckey[pygame.K_LEFT] == 0 else True][0],
-		"RIGHT": [False if bird.ckey[pygame.K_RIGHT] == 0 else True][0],
-	}
-	kk = "RIGHT"
-	for x in list(bckey.keys()):
-		if bckey[x] == True:
-			bird.handle_keys(k=x)
-			kk = x
-			break
-	bird.draw(screen, direction=kk)
-	pygame.display.update()
-	clock.tick(40)
+	if decision == 1:
+		dificulty_setting()
+		mouse_position = (0, 0)
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			mouse_position = pygame.mouse.get_pos()
+			if pygame.Surface.get_at(screen, mouse_position) == (0, 255, 0) or pygame.Surface.get_at(screen,mouse_position) == (0, 0, 0):
+				grd = astar(w=8, d=.75)
+				decision = 2
+				if grd != None:
+					print(grd)
+			if pygame.Surface.get_at(screen, mouse_position) == (0, 0, 255) or pygame.Surface.get_at(screen,mouse_position) == (0, 1, 0):
+				grd = astar(w=14, d=.85)
+				decision = 2
+				if grd != None:
+					print(grd)
+			if pygame.Surface.get_at(screen, mouse_position) == (255, 0, 0) or pygame.Surface.get_at(screen,mouse_position) == (1, 0, 0):
+				grd = astar(w=20, d=.95)
+				decision = 2
+				if grd != None:
+					print(grd)
+	if decision == 2:
+		screen.fill((0, 0, 0))  # fill the screen with white
+		pygame.draw.rect(screen, (255,255,255), (5,5,990,990), 20)
+		image2 = pygame.image.load("images/33.png")
+		screen.blit(image2, (0, 0))
+		pygame.display.update()
+
+		if pygame.Surface.get_at(screen, (round(bird.x-1),round(bird.y)))==(255,255,255):
+			bird.x = bird.x+3
+		if pygame.Surface.get_at(screen, (round(bird.x+bird.width-1),round(bird.y-1)))==(255,255,255):
+			bird.y = bird.y+3
+		if pygame.Surface.get_at(screen, (round(bird.x+bird.width+1),round(bird.y+bird.height)))==(255,255,255):
+			bird.x = bird.x-3
+		if pygame.Surface.get_at(screen, (round(bird.x),round(bird.y+bird.height+1)))==(255,255,255):
+			bird.y = bird.y-3
+		bird.handle_keys()
+
+		bckey = {
+			"DOWN": [False if bird.ckey[pygame.K_DOWN] == 0 else True][0],
+			"UP": [False if bird.ckey[pygame.K_UP] == 0 else True][0],
+			"LEFT": [False if bird.ckey[pygame.K_LEFT] == 0 else True][0],
+			"RIGHT": [False if bird.ckey[pygame.K_RIGHT] == 0 else True][0],
+		}
+		kk = "RIGHT"
+		for x in list(bckey.keys()):
+			if bckey[x] == True:
+				bird.handle_keys(k=x)
+				kk = x
+				break
+		bird.draw(screen, direction=kk)
+		pygame.display.update()
+		clock.tick(40)
