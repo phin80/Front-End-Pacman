@@ -19,11 +19,11 @@ class Bird(pygame.sprite.Sprite):
 		super().__init__()
 		self.imgdct = {}
 		self.images = self.imgdct["RIGHT"], self.imgdct["DOWN"], self.imgdct["UP"], self.imgdct["LEFT"] = [[
-				pygame.image.load(f"images/{itm}/player_{num}.png")
+				pygame.image.load(f"images/{itm}/player_{num}.png.png")
 				for num in range(0, 4)
 		] for itm in ["RIGHT", "DOWN", "UP", "LEFT"]]
 		self.index = 0
-		self.image = pygame.image.load("images/RIGHT/player_0.png")
+		self.image = pygame.image.load("images/RIGHT/player_0.png.png")
 		self.width, self.height = [self.image.get_width(), self.image.get_height()]
 		self.slowdown = 6
 		self.actualslow = 0
@@ -67,7 +67,6 @@ class Bird(pygame.sprite.Sprite):
 
 pygame.init()
 screen = pygame.display.set_mode((1000, 1000))
-screen.fill((0,0,0)) # fill the screen with white
 bird = Bird() # create an instance
 clock = pygame.time.Clock()
 #pygame.draw.r
@@ -139,17 +138,18 @@ while running:
 	if decision == 2:
 		screen.fill((0, 0, 0))  # fill the screen with white
 		pygame.draw.rect(screen, (255,255,255), (5,5,990,990), 20)
-		image2 = pygame.image.load("images/33.png")
+		image2 = pygame.image.load("images/lvl.png")
+		image2 = pygame.transform.scale(image2, (1000,1000))
 		screen.blit(image2, (0, 0))
 		pygame.display.update()
 
-		if pygame.Surface.get_at(screen, (round(bird.x-1),round(bird.y)))==(255,255,255):
+		if pygame.Surface.get_at(screen, (round(bird.x),round(bird.y+1)))==(255,255,255):
 			bird.x = bird.x+3
-		if pygame.Surface.get_at(screen, (round(bird.x+bird.width-1),round(bird.y-1)))==(255,255,255):
+		if pygame.Surface.get_at(screen, (round(bird.x+bird.width-1),round(bird.y)))==(255,255,255):
 			bird.y = bird.y+3
-		if pygame.Surface.get_at(screen, (round(bird.x+bird.width+1),round(bird.y+bird.height)))==(255,255,255):
+		if pygame.Surface.get_at(screen, (round(bird.x+bird.width),round(bird.y+bird.height-1)))==(255,255,255):
 			bird.x = bird.x-3
-		if pygame.Surface.get_at(screen, (round(bird.x),round(bird.y+bird.height+1)))==(255,255,255):
+		if pygame.Surface.get_at(screen, (round(bird.x+1),round(bird.y+bird.height)))==(255,255,255):
 			bird.y = bird.y-3
 		bird.handle_keys()
 
@@ -167,4 +167,4 @@ while running:
 				break
 		bird.draw(screen, direction=kk)
 		pygame.display.update()
-		clock.tick(40)
+		clock.tick(120)
