@@ -2,9 +2,11 @@ import math
 import random
 import re
 import sys
+
 import numpy as np
-from tools import maze as genrd
 from tools import gen_maze_img as gmi
+from tools import maze as genrd
+
 
 # Coords
 # Value = 0 (None)
@@ -13,7 +15,7 @@ from tools import gen_maze_img as gmi
 # Value = 3 (Start Position)
 if "-h" in sys.argv[1::]:
 	sys.exit("-h: Help\n-d=NUM [Density Variable]\n-v [Verbose Mode]\n-w=NUM [Width of Grid]\n-r [Switch to Random Maze Generation]\n-c=NUM [Complexity Variable]")
-	
+
 def gen_rand_grid(d, density=1, opt="NICE", cmp=0.75):
 	if opt == "RANDOM":
 		try:
